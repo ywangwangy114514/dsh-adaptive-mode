@@ -1,0 +1,74 @@
+{
+  "name": "dsh-adaptive-mode",
+  "version": "1.0.1",
+  "description": "自适应模式 for DeepSeek Harness: an Agent mode (preset) named 自适应模式 that lifts the session mode lock. The agent switches its own mode mid-task through the switch_mode tool — every switch asks the user in the approval dialog first — while the user changes any session (new or already running) from a clickable mode chip in the session header or the /mode command. Chinese mode names are recognised, each agent keeps its own unlock state, and modes contributed by third-party plugins are picked up live.",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "agent-preset",
+    "mode",
+    "adaptive",
+    "自适应模式"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ywangwangy114514/dsh-adaptive-mode.git"
+  },
+  "homepage": "https://github.com/ywangwangy114514/dsh-adaptive-mode#readme",
+  "bugs": {
+    "url": "https://github.com/ywangwangy114514/dsh-adaptive-mode/issues"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./runtime": "./lib/index.js",
+    "./core": "./lib/core.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "LICENSE",
+    "README.md",
+    "README.zh.md"
+  ],
+  "dsh": {
+    "plugin": true,
+    "kind": "server",
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  },
+  "disclosure": {
+    "cloud": false,
+    "network": [],
+    "offlineMode": true,
+    "apiKeys": [],
+    "permissions": {
+      "filesystem": "none",
+      "subprocess": "none"
+    },
+    "jurisdiction": [],
+    "retention": "none"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": "^0.1.5-rc.1 || ^0.1.7-rc.1 || ^0.2.0-rc.2",
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\""
+  }
+}
