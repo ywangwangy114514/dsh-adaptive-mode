@@ -58,7 +58,6 @@ plugin_manager({ action: "install_bundle", target: "D:\\path\\to\\dsh-adaptive-m
 
 - [插件完整说明（中文）](dsh-adaptive-mode/README.zh.md) — 设计取舍、配置项、审批与安全、已知边界
 - [Full plugin README (English)](dsh-adaptive-mode/README.md)
-- [发布指引](PUBLISH.md) — 没有 GitHub 账号时如何一步步发布
 
 ## 开发
 
