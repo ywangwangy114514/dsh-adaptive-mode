@@ -1,0 +1,11 @@
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+*.swp
+
+# Node
+node_modules/
+
+# Build output
+*.tgz
+dist/

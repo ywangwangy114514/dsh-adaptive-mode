@@ -1,0 +1,41 @@
+name: Release
+
+# Tag-driven releases: pushing a tag like v1.0.2 creates a GitHub Release and
+# attaches the packed plugin tarball, which is what DSH installs from.
+#
+# The npm publication itself lives in publish-npm.yml, kept separate because it
+# needs an NPM_TOKEN secret and this workflow does not.
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run the unit tests
+        working-directory: dsh-adaptive-mode
+        run: node --test "test/*.test.mjs"
+
+      - name: Pack the plugin
+        working-directory: dsh-adaptive-mode
+        run: |
+          npm pack
+          mv dsh-adaptive-mode-*.tgz "dsh-adaptive-mode-${GITHUB_REF_NAME#v}.tgz"
+
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dsh-adaptive-mode/dsh-adaptive-mode-*.tgz
+          generate_release_notes: true

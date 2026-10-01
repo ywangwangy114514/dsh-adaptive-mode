@@ -1,0 +1,9 @@
+# Files that exist for collaborators but are pointless in the published npm
+# tarball. `files` in package.json already lists what ships, so this only keeps
+# the two lists from drifting.
+test/
+docs/
+.publish/
+.github/
+.gitignore
+npm-shrinkwrap.json

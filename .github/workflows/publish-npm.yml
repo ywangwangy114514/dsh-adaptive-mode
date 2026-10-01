@@ -1,0 +1,48 @@
+name: Publish to npm
+
+# Runs only when the NPM_TOKEN secret exists, so a repository that has not set
+# one up yet is not left with a permanently red workflow.
+#
+# Never commit a token: add it under Settings → Secrets and variables → Actions
+# as NPM_TOKEN, generated on npmjs.com as an *Automation* token.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Check for the token
+        id: token
+        run: echo "present=${{ secrets.NPM_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Run the unit tests
+        if: steps.token.outputs.present == 'true'
+        working-directory: dsh-adaptive-mode
+        run: node --test "test/*.test.mjs"
+
+      - name: Publish
+        if: steps.token.outputs.present == 'true'
+        working-directory: dsh-adaptive-mode
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Explain the skip
+        if: steps.token.outputs.present != 'true'
+        run: |
+          echo "NPM_TOKEN is not set on this repository; nothing was published."
+          echo "See PUBLISH.md, section 5, to enable npm publication."
